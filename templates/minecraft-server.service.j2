@@ -1,0 +1,12 @@
+[Unit]
+Description=Minecraft Service
+After=network.target
+
+[Service]
+Type=exec
+WorkingDirectory=/usr/bin/
+ExecStart=/usr/bin/bedrock_server
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

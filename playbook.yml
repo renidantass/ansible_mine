@@ -1,0 +1,72 @@
+---
+  - name: Configurar Minecraft BedRock Server
+    hosts: minecraft-server
+
+    tasks:
+        - name: Instalando dependências
+          apt:
+            name: 
+              - unzip
+            state: present
+            update_cache: yes
+          become: yes
+
+        - name: Baixando bedrock-server.zip
+          get_url:
+            url: https://minecraft.azureedge.net/bin-linux/bedrock-server-1.19.52.01.zip
+            dest: /tmp/bedrock-server.zip
+
+        - name: Descompactando bedrock-server.zip
+          unarchive:
+            src: /tmp/bedrock-server.zip
+            dest: /usr/bin
+            remote_src: yes
+          become: yes
+
+        - name: Permitir conexões TCP ao Minecraft Server
+          iptables:
+            chain: INPUT
+            ctstate: NEW
+            protocol: tcp
+            destination_port: 19132
+            jump: ACCEPT
+            comment: Minecraft Bedrock Server
+          become: yes
+
+        - name: Permitir conexões UDP ao Minecraft Server
+          iptables:
+            chain: INPUT
+            ctstate: NEW
+            protocol: udp
+            destination_port: 19132
+            jump: ACCEPT
+            comment: Minecraft Bedrock Server
+          become: yes
+
+        - name: Criando serviço sysmted
+          ansible.builtin.template:
+            src: templates/minecraft-server.service.j2
+            dest: /etc/systemd/system/minecraft-server.service
+          become: yes
+        
+        - name: Criando server.properties
+          ansible.builtin.template:
+            src: templates/server.properties.j2
+            dest: /usr/bin/server.properties
+          become: yes
+
+        - name: Recarregando configurações do systemd
+          ansible.builtin.systemd:
+            daemon_reload: true
+          become: yes
+
+        - name: Habilita serviço systemd
+          ansible.builtin.systemd:
+            name: minecraft-server.service
+            enabled: true
+
+        - name: Reinicia serviço systemd
+          ansible.builtin.systemd:
+            name: minecraft-server.service
+            state: restarted
+          become: yes
