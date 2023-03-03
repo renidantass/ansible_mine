@@ -31,8 +31,9 @@ jobs:
           tokenPrefix: '{'
           tokenSuffix: '}'
           files: '["hosts.yml"]'
+          SECRET_VALUE: ${{ secrets.SSH_PASSWORD }}
         env:
-          PASSWORD: ${{ secrets.SSH_PASSWORD }}
+          PASSWORD: $SECRET_VALUE
       
       - name: run playbook
         run: "ansible-playbook -i hosts.yml playbook.yml"
