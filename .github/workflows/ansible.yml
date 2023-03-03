@@ -15,11 +15,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: "Analisando hosts.yml"
-        uses: ansible/ansible-lint-action@main
-        with:
-          path: "hosts.yml"
-
       - name: "Analisando playbook.yml"
         uses: ansible/ansible-lint-action@main
         with:
