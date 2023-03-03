@@ -13,9 +13,10 @@ jobs:
     name: "Realizando análise"
     runs-on: ubuntu-latest
     steps:
-      - name: Analisando sintaticamente hosts
+      - name: "Analisando arquivos .yml"
         uses: ansible/ansible-lint-action@main
-          path: "hosts.yml"
+        with:
+          path: "."
 
   setup:
     name: "Realizando configuração/atualização - BedRock Server"
