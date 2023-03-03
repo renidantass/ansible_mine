@@ -13,7 +13,7 @@
 
         - name: Baixando bedrock-server.zip
           get_url:
-            url: https://minecraft.azureedge.net/bin-linux/bedrock-server-1.19.52.01.zip
+            url: https://minecraft.azureedge.net/bin-linux/bedrock-server-1.19.63.01.zip
             dest: /tmp/bedrock-server.zip
 
         - name: Descompactando bedrock-server.zip
