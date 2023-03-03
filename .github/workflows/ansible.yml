@@ -26,14 +26,13 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           if [ -f test-requirements.txt ]; then pip install -r test-requirements.txt; fi
       
-      - uses: cschleiden/replace-tokens@v1
+      - name: Substitute Secrets
+        uses: Lambdaspire/action-substitute-secrets-in-file@v1.0.0
         with:
-          tokenPrefix: '{'
-          tokenSuffix: '}'
-          files: '["hosts.yml"]'
-          SECRET_VALUE: ${{ secrets.SSH_PASSWORD }}
-        env:
-          PASSWORD: $SECRET_VALUE
+          file: hosts.yml
+          output: hosts.yml
+          tokenPattern: ${TOKEN}
+          secretsJson: ${{ toJSON(secrets) }}
       
       - name: run playbook
         run: "ansible-playbook -i hosts.yml playbook.yml"
