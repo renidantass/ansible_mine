@@ -10,16 +10,21 @@ on:
 
 jobs:
   test:
-    name: "Realizando análise"
+    name: "Testes"
     runs-on: ubuntu-latest
     steps:
-      - name: "Analisando arquivos .yml"
+      - name: "Analisando hosts.yml"
         uses: ansible/ansible-lint-action@main
         with:
-          path: "."
+          path: "hosts.yml"
+
+      - name: "Analisando playbook.yml"
+        uses: ansible/ansible-lint-action@main
+        with:
+          path: "playbook.yml"
 
   setup:
-    name: "Realizando configuração/atualização - BedRock Server"
+    name: "Configuração"
     runs-on: ubuntu-latest
 
     steps:
