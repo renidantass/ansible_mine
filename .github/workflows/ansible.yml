@@ -13,6 +13,8 @@ jobs:
     name: "Testes"
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+
       - name: "Analisando hosts.yml"
         uses: ansible/ansible-lint-action@main
         with:
@@ -24,6 +26,7 @@ jobs:
           path: "playbook.yml"
 
   setup:
+    needs: test
     name: "Configuração"
     runs-on: ubuntu-latest
 
