@@ -26,5 +26,15 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           if [ -f test-requirements.txt ]; then pip install -r test-requirements.txt; fi
       
+      - name: Substitute Secrets
+        uses: Lambdaspire/action-substitute-secrets-in-file@v1.0.0
+        with:
+          file: hosts.yml
+          output: hosts.yml
+          tokenPattern: ${TOKEN}
+          secretsJson: ${{ toJSON(secrets) }}
+      
       - name: run playbook
-        run: "ansible-playbook -i hosts.yml ansible/hello-world.yaml"
+        run: "ansible-playbook -i hosts.yml playbook.yml"
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: False

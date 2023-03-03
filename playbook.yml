@@ -1,6 +1,6 @@
 ---
   - name: Configurar Minecraft BedRock Server
-    hosts: minecraft-server
+    hosts: minecraft_server
 
     tasks:
         - name: Instalando dependências
