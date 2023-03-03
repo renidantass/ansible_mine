@@ -9,24 +9,33 @@ on:
   workflow_dispatch:
 
 jobs:
-  run-playbook:
+  test:
+    name: "Realizando análise"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Analisando sintaticamente hosts
+        uses: ansible/ansible-lint-action@main
+          path: "hosts.yml"
+
+  setup:
+    name: "Realizando configuração/atualização - BedRock Server"
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up Python 3.9
+      - name: Instalando Python 3.9
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
           
-      - name: Install dependencies Including Ansible
+      - name: Instalando dependências para rodar o ansible
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           if [ -f test-requirements.txt ]; then pip install -r test-requirements.txt; fi
       
-      - name: Substitute Secrets
+      - name: Substituindo tokens por GitHub Secrets
         uses: Lambdaspire/action-substitute-secrets-in-file@v1.0.0
         with:
           file: hosts.yml
@@ -34,7 +43,7 @@ jobs:
           tokenPattern: ${TOKEN}
           secretsJson: ${{ toJSON(secrets) }}
       
-      - name: run playbook
+      - name: Rodando playbook
         run: "ansible-playbook -i hosts.yml playbook.yml"
         env:
           ANSIBLE_HOST_KEY_CHECKING: False
