@@ -32,7 +32,7 @@ jobs:
           tokenSuffix: '}'
           files: '["hosts.yml"]'
         env:
-          CDN: ${{ secrets.SSH_PASSWORD }}
+          PASSWORD: ${{ secrets.SSH_PASSWORD }}
       
       - name: run playbook
         run: "ansible-playbook -i hosts.yml playbook.yml"
