@@ -36,3 +36,5 @@ jobs:
       
       - name: run playbook
         run: "ansible-playbook -i hosts.yml playbook.yml"
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: False
